@@ -1,6 +1,6 @@
 /* eslint-disable */
-export const user = {
-    id    : 'cfaad35d-07a3-4447-a6c3-d8c3d54fd5df',
+export const userData = {
+    id    : '8a7cf3fb-662c-4b6f-a065-d9ab965b64bb',
     name  : 'IClass Demo',
     email : 'demo@iclass.one',
     avatar: null,

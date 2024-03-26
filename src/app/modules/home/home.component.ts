@@ -15,7 +15,7 @@ export class LandingHomeComponent
     /**
      * Constructor
      */
-    constructor()
+    constructor(private authService: AuthService)
     {
     }
 }
