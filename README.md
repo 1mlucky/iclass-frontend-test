@@ -19,7 +19,7 @@ Your task is to implement a simple web system that allows users to login and acc
 4. Implement a simple todo list on the `/dashboard` page that allows users to add / update / delete the todo item.
 
 ## How to submit
-Please fork this repo, switch it into private repo, work on it, and then add our staff as collaborators to check the result.
+Please fork this repo, switch it into private repo, work on it, and then add @iclassadmin as repo collaborator to check your result.
 
 ## Login account
 The demo user login is:
