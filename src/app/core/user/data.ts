@@ -5,4 +5,5 @@ export const userData = {
     email : 'demo@iclass.one',
     avatar: null,
     status: 'online',
+    todoList: []
 };
