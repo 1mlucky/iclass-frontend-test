@@ -1,19 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from 'app/core/user/user.types';
+import { User } from 'app/models/user.types';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { userData } from './data';
+import { userData } from '../../data/userData';
 
-@Injectable({providedIn: 'root'})
-export class UserService
-{
-    private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
+@Injectable({ providedIn: 'root' })
+export class UserService {
+    private _user: ReplaySubject<User> = new ReplaySubject<User>();
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
-    {
+    constructor(private _httpClient: HttpClient) {
+        this._user.subscribe((user: User) => {
+
+            localStorage.setItem('user', JSON.stringify(user));
+
+        })
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -25,27 +29,26 @@ export class UserService
      *
      * @param value
      */
-    set user(value: User)
-    {
+    set user(value: User) {
         // Store the value
         this._user.next(value);
     }
 
-    get user$(): Observable<User>
-    {
-        return this._user.asObservable();
+    get user(): User {
+
+        const value = JSON.parse(localStorage.getItem('user') ?? JSON.stringify(userData));
+
+        return value
+
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    get user$(): Observable<User> {
 
-    /**
-     * Get the current logged in user data
-     */
-    get(): Observable<User>
-    {
-        this._user.next(userData);
-        return of(userData);
+        const value = JSON.parse(localStorage.getItem('user') ?? JSON.stringify(userData));
+
+        this._user.next(value);
+        // this._user.next(value);
+
+        return this._user.asObservable();
     }
 }
