@@ -8,4 +8,8 @@ export const appRoutes: Route[] = [
         path: 'home',
         loadChildren: () => import('./modules/home/home.routes')
     },
+    {
+        path: 'dashboard',
+        loadChildren: () => import('./modules/admin/dashboard/dashboard.routes')
+    },
 ];
