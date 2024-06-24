@@ -2,23 +2,30 @@ import { Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { Observable, of, throwError } from 'rxjs';
-import { userData } from '../user/data';
+import { userData } from '../../data/userData';
 import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import { HmacSHA256 } from 'crypto-js';
 
-@Injectable({providedIn: 'root'})
-export class AuthService
-{
+@Injectable({ providedIn: 'root' })
+export class AuthService {
     private _authenticated: boolean = false;
+
+    public errors = {
+        UNAUTHORIZED: "Not authorized !!"
+    }
 
     /**
      * Constructor
      */
     constructor(
         private _userService: UserService,
-    )
-    {
+    ) {
+        this._userService = _userService
+
+        const strToken = this.accessToken
+
+        this._authenticated = !!strToken && strToken != ""
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -28,13 +35,11 @@ export class AuthService
     /**
      * Setter & getter for access token
      */
-    set accessToken(token: string)
-    {
+    set accessToken(token: string) {
         localStorage.setItem('accessToken', token);
     }
 
-    get accessToken(): string
-    {
+    get accessToken(): string {
         return localStorage.getItem('accessToken') ?? '';
     }
 
@@ -47,24 +52,22 @@ export class AuthService
      *
      * @param credentials
      */
-    signIn(credentials: { email: string; password: string }): Observable<any>
-    {
-        if ( this._authenticated )
-        {
-            return throwError('Already logged in.');
-        }
-
+    signIn(credentials: { email: string; password: string }): Observable<any> {
         if (credentials.email == userData.email && credentials.password == 'demo') {
+
+            if (this._authenticated) {
+                return throwError('Already logged in.');
+            }
+
             this.accessToken = this._generateJWTToken();
             this._authenticated = true;
-            this._userService.user = userData;
 
             return of([
                 200,
                 {
-                    user       : this._userService.user,
+                    user: this._userService.user,
                     accessToken: this.accessToken,
-                    tokenType  : 'bearer',
+                    tokenType: 'bearer',
                 },
             ]);
         } else {
@@ -78,8 +81,7 @@ export class AuthService
     /**
      * Sign out
      */
-    signOut(): Observable<any>
-    {
+    signOut(): Observable<any> {
         // Remove the access token from the local storage
         localStorage.removeItem('accessToken');
 
@@ -90,26 +92,26 @@ export class AuthService
         return of(true);
     }
 
+    checkAuthenticated(): boolean {
+        return this._authenticated
+    }
+
     /**
      * Check the authentication status
      */
-    check(): Observable<boolean>
-    {
+    check(): Observable<boolean> {
         // Check if the user is logged in
-        if ( this._authenticated )
-        {
+        if (this._authenticated) {
             return of(true);
         }
 
         // Check the access token availability
-        if ( !this.accessToken )
-        {
+        if (!this.accessToken) {
             return of(false);
         }
 
         // Check the access token expire date
-        if ( AuthUtils.isTokenExpired(this.accessToken) )
-        {
+        if (AuthUtils.isTokenExpired(this.accessToken)) {
             return of(false);
         }
 
@@ -123,8 +125,7 @@ export class AuthService
      * @param source
      * @private
      */
-    private _base64url(source: any): string
-    {
+    private _base64url(source: any): string {
         // Encode in classical base64
         let encodedSource = Base64.stringify(source);
         encodedSource = encodedSource.replace(/=+$/, '');
@@ -135,8 +136,7 @@ export class AuthService
         return encodedSource;
     }
 
-    private _generateJWTToken(): string
-    {
+    private _generateJWTToken(): string {
         // Define token header
         const header = {
             alg: 'HS256',
@@ -146,6 +146,7 @@ export class AuthService
         // Calculate the issued at and expiration dates
         const date = new Date();
         const iat = Math.floor(date.getTime() / 1000);
+        // expire date time
         const exp = Math.floor((date.setDate(date.getDate() + 7)) / 1000);
 
         // Define token payload
