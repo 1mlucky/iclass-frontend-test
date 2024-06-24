@@ -1,1 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
+
+.app-container {
+    min-height: 320px;
+    overflow: hidden;
+}
+
+.btn-delete-user {
+    width: 40px;
+    text-align: center;
+    box-sizing: content-box;
+}
+
+#list1 .form-control {
+    border-color: transparent;
+}
+
+#list1 .form-control:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+#list1 .select-input.form-control[readonly]:not([disabled]) {
+    background-color: #fbfbfb;
+}
+
+// .strike input[type="text"][disabled] {
+//     background-color: #fff;
+//     text-decoration: line-through;
+// }
+
+// input[type="text"][disabled] {
+//     background-color: #fff;
+//     // text-decoration: line-through;
+// }
+
+input[type="text"][disabled]{
+    .strike {
+        text-decoration: line-through;
+    }
+    text-decoration: line-through;
+    background-color: #fff;
+}
+
+// .nostrike input[type="text"][disabled] {
+//     background-color: #fff;
+//     text-decoration: line-through;
+// }
