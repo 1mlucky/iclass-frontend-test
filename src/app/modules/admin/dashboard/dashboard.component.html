@@ -1,4 +1,79 @@
 <div id="admin-dashbaord">
-    <h1>This is dashboard page.</h1>
-    <p>Please implement a simple To-Do(s) List on this page.</p>
+    <section class="vh-50">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card" id="list1" style="border-radius: .75rem; background-color: #ffffff;">
+                        <div class="card-body py-4 px-4 px-md-5">
+
+                            <p class="h1 text-center mt-3 mb-4 pb-1 .text-dark font-weight-bold">
+                                My Todos
+                            </p>
+
+                            <div class="pb-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <input type="text" class="form-control form-control-lg"
+                                                id="exampleFormControlInput1" placeholder="Add new ... and press <Enter>"
+                                                [value]="_todoInput" (change)="onTodoInputValueChange($event)"
+                                                (keyup.enter)="addTodo($event)">
+                                            <a href="#!" data-mdb-tooltip-init title="Set due date">
+                                                <i class="fas fa-calendar-alt fa-lg me-3">
+                                                </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="_todoList.length != 0">
+                                <hr class="my-4">
+                                <ul *ngFor="let _todoItem of _todoList"
+                                    class="list-group list-group-horizontal rounded-0 bg-transparent">
+                                    <li
+                                        class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+                                        <div class="form-check">
+                                            <input class="form-check-input me-0" type="checkbox" value=""
+                                                (change)="_todoItem.isCompleted && unCompleteTodo(_todoItem); !_todoItem.isCompleted && completeTodo(_todoItem);"
+                                                [checked]="_todoItem.isCompleted" />
+                                        </div>
+                                    </li>
+                                    <li
+                                        class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                                        <input type="text" class="strike form-control form-control-lg strike"
+                                            placeholder="Edit ... and press <Enter>" [value]="_todoItem.value"
+                                            (change)="_todoItem.value = $any($event).target.value; updateTodo(_todoItem);"
+                                            [disabled]="_todoItem.isCompleted">
+                                    </li>
+                                    <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
+                                        <div class="d-flex flex-row justify-content-end mb-1">
+                                            <button class="btn" (click)="unCompleteTodo(_todoItem)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
+                                                </svg>
+                                            </button>
+                                            <button class="btn" (click)="deleteTodo(_todoItem)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <button (click)="logout()" class="btn btn-primary">
+                Logout
+            </button>
+        </div>
+    </section>
 </div>
