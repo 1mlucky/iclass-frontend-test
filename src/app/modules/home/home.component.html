@@ -1,9 +1,51 @@
 <div id="home">
-    <h1>iClass Angular Test</h1>
-    <p>
-        1. Simple login page => Calling the signin function [Already provided in `AuthService`]<br/>
-        2. Adding a route makes `/dashboard` path access to `AdminDashboardComponent` component<br/>
-        3. Implement a middleware to make sure the `/dashboard` page not accessible when user not signed in.<br/>
-        4. Implement a simple todo list on the `/dashboard` page that allows users to add / update / delete the todo item.
-    </p>
+  <br />
+  <h1>iClass Angular Test</h1>
+  <br />
+  <br />
+  <div class="card">
+    <h4 class="card-header">Login</h4>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">email</label>
+          <input type="text" formControlName='email' class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">email is required</div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" formControlName="password" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+          <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+            <div *ngIf="f['password'].errors['required']">Password is required</div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <button [disabled]="loading" class="btn btn-primary">
+              <span *ngIf='loading' class="spinner-border spinner-border-sm me-1"></span>
+              Login
+            </button>
+            <!-- <span style="margin: 5px"></span> -->
+          </div>
+          <br />
+          <br />
+          <div *ngIf="boolShowErrorMessage" class="alert alert-danger alert-dismissible fade show">
+            <h4 class="alert-heading">
+              <i class="bi-exclamation-octagon-fill">
+              </i>
+              Wrong Credentials
+            </h4>
+            <hr>
+            Please enter correct credentials.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="dimissErrorMessage()"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <br />
 </div>
